@@ -396,9 +396,8 @@
     }
 
     // Firebase connect/teardown
-  // Firebase connect/teardown
     async function connectFirebase(){
-      // DIRECT CONFIGURATION (Hardcoded for GitHub Pages)
+      // DIRECT CONFIGURATION (Hardcoded)
       const config = {
         apiKey: "AIzaSyDw3OzTDXp5g8ymWm5jbl2Z1FhGMeREOuw",
         authDomain: "kurigramians-stars.firebaseapp.com",
@@ -410,20 +409,18 @@
 
       try{
         if (state.firebase.app) { 
-          // already initialized, do nothing
+           // already initialized
         } else {
           state.firebase.app = firebase.initializeApp(config);
           state.firebase.auth = firebase.auth();
           state.firebase.db = firebase.firestore();
         }
 
-        // Anonymous sign-in to tag ownership
         if(!state.firebase.auth.currentUser){
           await state.firebase.auth.signInAnonymously();
         }
         state.firebase.uid = state.firebase.auth.currentUser ? state.firebase.auth.currentUser.uid : null;
 
-        // Start listener
         if(state.firebase.unsub){ state.firebase.unsub(); state.firebase.unsub=null; }
         
         const col = state.firebase.db.collection("achievements");
@@ -461,53 +458,7 @@
         updateModeBanner();
       }
     }
-
-    // CRUD (auto-route to Firebase or Local)
-    async function addOrUpdate(payload){
-      if(state.mode==="firebase" && state.firebase.db && state.firebase.uid){
-        const col = state.firebase.db.collection("achievements");
-        if(payload.id){ // update
-          const id = payload.id;
-          const ref = col.doc(id);
-          const existingOwnerOk = true; // UI restricts ownership; rules should enforce for real
-          if(existingOwnerOk){
-            await ref.set(payload, { merge: true });
-          }
-        } else { // add
-          payload.createdBy = state.firebase.uid;
-          payload.createdAt = Date.now();
-          payload.updatedAt = Date.now();
-          const docRef = await col.add(payload);
-          payload.id = docRef.id;
-        }
-      } else {
-        // Local
-        if(payload.id){
-          const idx = state.achievements.findIndex(a=>a.id===payload.id);
-          if(idx>=0){
-            const prev = state.achievements[idx];
-            state.achievements[idx] = { ...prev, ...payload, updatedAt: Date.now() };
-          }
-        } else {
-          payload.id = cryptoId();
-          payload.createdBy = uidOrToken();
-          payload.createdAt = Date.now();
-          payload.updatedAt = Date.now();
-          state.achievements.unshift(payload);
-        }
-        saveLocal();
-        renderAll();
-      }
-    }
-
-    async function deleteById(id){
-      if(state.mode==="firebase" && state.firebase.db){
-        await state.firebase.db.collection("achievements").doc(id).delete();
-      } else {
-        state.achievements = state.achievements.filter(a=>a.id!==id);
-        saveLocal(); renderAll();
-      }
-    }
+  
 
     // Renderers
     function applyFilters(list){
