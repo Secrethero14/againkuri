@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <title>Kurigramians Star — Real-time Achievers Directory</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Firebase compat SDKs (loaded but not initialized until you paste config) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -29,27 +27,25 @@
     .accordion.open .accordion-content{max-height:1200px}
     .modal{position:fixed;inset:0;display:none;z-index:50}
     .modal.open{display:flex}
-    /* ড্রপডাউন মেনুর সমস্যা সমাধানের জন্য */
+    /* Fixed dropdown colors */
     option {
-      background-color: #333333; /* গাঢ় ধূসর ব্যাকগ্রাউন্ড */
-      color: white; /* সাদা লেখা */
+      background-color: #333333;
+      color: white;
     }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-emerald-700 via-teal-700 to-indigo-800 text-white">
-  <!-- Top notice -->
   <div id="modeBanner" class="w-full bg-amber-400/90 text-emerald-950 text-sm">
     <div class="max-w-6xl mx-auto px-4 py-2 flex flex-col md:flex-row gap-2 md:items-center justify-between">
       <div class="flex items-center gap-2">
         <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-900/20 text-emerald-900">ℹ️</span>
-        <p id="modeText">Local mode: data is saved in this browser only. Click “Firebase Setup” to enable real-time sync for everyone.</p>
+        <p id="modeText">Local mode: data is saved in this browser only.</p>
       </div>
       <button id="openSetupBtn" class="px-3 py-1.5 rounded-lg btn-secondary text-white">Firebase Setup</button>
     </div>
   </div>
 
-  <!-- Header / Hero -->
-  <header class="max-w-6xl mx-auto px-4 pt-10 pb-6">
+  <header class="max-w-6xl mx-auto px-4 pt-4 pb-4 md:pt-10 md:pb-6">
     <div class="glass rounded-2xl p-6 md:p-10 shadow-soft">
       <div class="flex flex-col lg:flex-row gap-8 items-start lg:items-center">
         <div class="flex-1">
@@ -81,7 +77,6 @@
     </div>
   </header>
 
-  <!-- Tabs -->
   <section class="max-w-6xl mx-auto px-4">
     <div class="flex gap-2 md:gap-3 mb-6">
       <button id="tabDirectory" class="px-4 md:px-6 py-2 rounded-full btn-secondary focus-ring">Directory</button>
@@ -91,7 +86,6 @@
   </section>
 
   <main class="max-w-6xl mx-auto px-4 pb-16">
-    <!-- Directory: search and list -->
     <section id="directoryView" class="glass rounded-2xl p-6 md:p-8 shadow-soft mb-8">
       <div class="flex flex-col md:flex-row md:items-end gap-4 md:gap-6">
         <div class="flex-1">
@@ -119,21 +113,16 @@
         </div>
       </div>
 
-      <div id="directoryList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mt-6">
-        <!-- Cards injected here -->
-      </div>
-
+      <div id="directoryList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mt-6"></div>
       <div id="emptyState" class="hidden mt-8 text-center text-emerald-50/80">
         No results found. Try clearing filters or add the first achievement using “+ Add Achievement”.
       </div>
     </section>
 
-    <!-- Upazila Sections -->
     <section id="upazilaView" class="hidden">
       <div class="space-y-4 md:space-y-6" id="upazilaSections"></div>
     </section>
 
-    <!-- How it works -->
     <section id="how-it-works" class="glass rounded-2xl p-6 md:p-8 shadow-soft">
       <h3 class="text-xl md:text-2xl font-bold mb-4">How this works</h3>
       <ul class="list-disc pl-6 space-y-2 text-emerald-50/90">
@@ -145,7 +134,6 @@
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="border-t border-white/15">
     <div class="max-w-6xl mx-auto px-4 py-8 md:py-10 text-center">
       <p class="text-lg md:text-xl italic text-emerald-50/90">
@@ -155,10 +143,9 @@
     </div>
   </footer>
 
-  <!-- Add/Edit Modal -->
   <div id="formModal" class="modal items-center justify-center px-4">
     <div class="absolute inset-0 bg-black/50"></div>
-    <div class="relative glass rounded-2xl shadow-soft max-w-2xl w-full p-6 md:p-8">
+    <div class="relative glass rounded-2xl shadow-soft max-w-2xl w-full p-6 md:p-8 max-h-[85vh] overflow-y-auto">
       <div class="flex items-center justify-between mb-4">
         <h2 id="formTitle" class="text-2xl md:text-3xl font-bold">Add Achievement</h2>
         <button id="closeFormBtn" class="px-3 py-2 rounded-lg glass">✖</button>
@@ -212,7 +199,6 @@
     </div>
   </div>
 
-  <!-- Firebase Setup Modal -->
   <div id="setupModal" class="modal items-center justify-center px-4">
     <div class="absolute inset-0 bg-black/50"></div>
     <div class="relative glass rounded-2xl shadow-soft max-w-3xl w-full p-6 md:p-8">
@@ -224,19 +210,10 @@
         <p class="text-emerald-50/90 text-sm md:text-base">
           Paste your Firebase web config JSON here. We’ll store it safely in your browser and enable real-time sync.
         </p>
-        <textarea id="firebaseConfigInput" rows="8" placeholder='Example:
-{
-  "apiKey": "YOUR_KEY",
-  "authDomain": "your-project.firebaseapp.com",
-  "projectId": "your-project",
-  "appId": "APP_ID"
-}'
-          class="w-full rounded-xl px-4 py-3 bg-white/10 text-white placeholder-white/60 focus-ring"></textarea>
+        <textarea id="firebaseConfigInput" rows="8" class="w-full rounded-xl px-4 py-3 bg-white/10 text-white placeholder-white/60 focus-ring"></textarea>
         <div class="flex flex-wrap gap-3">
           <button id="saveConfigBtn" class="px-5 py-3 rounded-xl btn-primary font-semibold">Save & Connect</button>
           <button id="clearConfigBtn" class="px-5 py-3 rounded-xl btn-danger">Clear Config</button>
-          <a href="https://firebase.google.com/docs/web/setup" target="_blank" rel="noopener noreferrer"
-             class="px-5 py-3 rounded-xl glass">Open Firebase Guide ↗</a>
         </div>
         <div id="setupStatus" class="text-sm text-emerald-50/80"></div>
       </div>
@@ -246,25 +223,15 @@
   <script>
     // Constants
     const UPZs = ["Kurigram Sadar","Rajarhat","Chilmari","Ulipur","Nageshwari","Char Rajibpur","Bhurungamari","Phulbari","Rowmari"];
-    const LS_KEYS = {
-      deviceToken: "ks_device_token_v2",
-      achievements: "ks_achievements_v2",
-      fbConfig: "ks_firebase_config_v1"
-    };
+    const LS_KEYS = { deviceToken: "ks_device_token_v2", achievements: "ks_achievements_v2", fbConfig: "ks_firebase_config_v1" };
 
     // State
     const state = {
-      mode: "local",       // "local" or "firebase"
+      mode: "local",
       achievements: [],
       filters: { query: "", upazila: "", jobType: "" },
       editingId: null,
-      firebase: {
-        app: null,
-        db: null,
-        auth: null,
-        uid: null,
-        unsub: null
-      }
+      firebase: { app: null, db: null, auth: null, uid: null, unsub: null }
     };
 
     // Elements
@@ -279,7 +246,6 @@
     const filterJobType = document.getElementById("filterJobType");
     const tabDirectory = document.getElementById("tabDirectory");
     const tabUpazilas = document.getElementById("tabUpazilas");
-
     const formModal = document.getElementById("formModal");
     const openFormBtn = document.getElementById("openFormBtn");
     const closeFormBtn = document.getElementById("closeFormBtn");
@@ -287,7 +253,6 @@
     const formTitle = document.getElementById("formTitle");
     const cancelEditBtn = document.getElementById("cancelEditBtn");
     const saveBtn = document.getElementById("saveBtn");
-
     const nameEl = document.getElementById("name");
     const upazilaEl = document.getElementById("upazila");
     const jobTypeEl = document.getElementById("jobType");
@@ -296,7 +261,6 @@
     const organizationEl = document.getElementById("organization");
     const contactEl = document.getElementById("contact");
     const editIdEl = document.getElementById("editId");
-
     const setupModal = document.getElementById("setupModal");
     const openSetupBtn = document.getElementById("openSetupBtn");
     const openSetupBtn2 = document.getElementById("openSetupBtn2");
@@ -350,67 +314,43 @@
       renderUpazilaSections();
     });
 
-    // Form Modal open/close
+    // Form Modal
     openFormBtn.addEventListener("click",()=>{ startAdd(); openModal(formModal); });
     closeFormBtn.addEventListener("click",()=> closeModal(formModal));
     formModal.addEventListener("click",(e)=>{ if(e.target===formModal) closeModal(formModal); });
 
-    // Setup Modal open/close
+    // Setup Modal
     function openSetup(){ firebaseConfigInput.value = localStorage.getItem(LS_KEYS.fbConfig) || ""; setupStatus.textContent=""; openModal(setupModal); }
     openSetupBtn.addEventListener("click", openSetup);
     openSetupBtn2.addEventListener("click", openSetup);
     closeSetupBtn.addEventListener("click",()=> closeModal(setupModal));
     setupModal.addEventListener("click",(e)=>{ if(e.target===setupModal) closeModal(setupModal); });
 
-    // Save/Clear Firebase config
     saveConfigBtn.addEventListener("click", async ()=>{
-      try{
-        const txt = firebaseConfigInput.value.trim();
-        if(!txt) { setupStatus.textContent = "Please paste your Firebase config JSON."; return; }
-        const conf = JSON.parse(txt);
-        localStorage.setItem(LS_KEYS.fbConfig, JSON.stringify(conf));
-        setupStatus.textContent = "Saved. Connecting...";
+      try{ const txt = firebaseConfigInput.value.trim(); if(!txt) return;
+        const conf = JSON.parse(txt); localStorage.setItem(LS_KEYS.fbConfig, JSON.stringify(conf));
         await connectFirebase();
-        setupStatus.textContent = state.mode==="firebase" ? "Connected! Real-time sync is on." : "Could not connect. Check your config.";
-      }catch(err){
-        setupStatus.textContent = "Invalid JSON. Please paste the exact config object.";
-      }
+      }catch(err){}
     });
     clearConfigBtn.addEventListener("click", ()=>{
       localStorage.removeItem(LS_KEYS.fbConfig);
       teardownFirebase();
-      setupStatus.textContent = "Config cleared. Back to Local mode.";
-      updateModeBanner();
     });
 
-    // Local storage fallback
+    // Local storage
     function loadLocal(){
       try{ const raw=localStorage.getItem(LS_KEYS.achievements); state.achievements = raw? JSON.parse(raw): []; }
       catch{ state.achievements = []; }
-      updateJobTypeFilterOptions();
-      renderAll();
+      updateJobTypeFilterOptions(); renderAll();
     }
     function saveLocal(){
       localStorage.setItem(LS_KEYS.achievements, JSON.stringify(state.achievements));
       updateJobTypeFilterOptions();
     }
 
-    // এই ফাংশনটি মিসিং ছিল, তাই ব্যানার আপডেট হচ্ছিল না
-    function updateModeBanner(){
-      if(state.mode==="firebase"){
-        modeBanner.className = "w-full bg-emerald-600 text-white text-sm";
-        modeText.textContent = "Firebase mode: real-time sync is ON. Everyone with the link shares the same data.";
-        openSetupBtn.classList.add("hidden");
-      } else {
-        modeBanner.className = "w-full bg-amber-400/90 text-emerald-950 text-sm";
-        modeText.textContent = "Local mode: data is saved in this browser only. Click “Firebase Setup” to enable real-time sync for everyone.";
-        openSetupBtn.classList.remove("hidden");
-      }
-    }
-
-    // Firebase connect/teardown
+    // FIREBASE CONNECT
     async function connectFirebase(){
-      // DIRECT CONFIGURATION (Hardcoded)
+      // DIRECT CONFIGURATION (Hardcoded for GitHub Pages)
       const config = {
         apiKey: "AIzaSyDw3OzTDXp5g8ymWm5jbl2Z1FhGMeREOuw",
         authDomain: "kurigramians-stars.firebaseapp.com",
@@ -419,21 +359,14 @@
         messagingSenderId: "844222654198",
         appId: "1:844222654198:web:cb02b8b6f44c8991adaed7"
       };
-
       try{
-        if (state.firebase.app) { 
-           // already initialized
-        } else {
+        if (!state.firebase.app) {
           state.firebase.app = firebase.initializeApp(config);
           state.firebase.auth = firebase.auth();
           state.firebase.db = firebase.firestore();
         }
-
-        if(!state.firebase.auth.currentUser){
-          await state.firebase.auth.signInAnonymously();
-        }
+        if(!state.firebase.auth.currentUser){ await state.firebase.auth.signInAnonymously(); }
         state.firebase.uid = state.firebase.auth.currentUser ? state.firebase.auth.currentUser.uid : null;
-
         if(state.firebase.unsub){ state.firebase.unsub(); state.firebase.unsub=null; }
         
         const col = state.firebase.db.collection("achievements");
@@ -458,20 +391,68 @@
           state.achievements = arr;
           updateJobTypeFilterOptions();
           renderAll();
-        },(err)=>{
-          console.warn("Snapshot error", err);
-        });
+        },(err)=>{ console.warn("Snapshot error", err); });
         
         state.mode = "firebase";
         updateModeBanner();
-
       }catch(e){
         console.warn("Firebase init failed", e);
         state.mode = "local";
         updateModeBanner();
       }
     }
-  
+
+    // HELPER FUNCTIONS (Banner, Add/Update, Delete)
+    function updateModeBanner(){
+      if(state.mode==="firebase"){
+        modeBanner.className = "w-full bg-emerald-600 text-white text-sm";
+        modeText.textContent = "Firebase mode: real-time sync is ON.";
+        openSetupBtn.classList.add("hidden");
+        if(openSetupBtn2) openSetupBtn2.classList.add("hidden");
+      } else {
+        modeBanner.className = "w-full bg-amber-400/90 text-emerald-950 text-sm";
+        modeText.textContent = "Local mode: data saved locally.";
+        openSetupBtn.classList.remove("hidden");
+        if(openSetupBtn2) openSetupBtn2.classList.remove("hidden");
+      }
+    }
+
+    async function addOrUpdate(item){
+      if(state.mode==="firebase"){
+        const col = state.firebase.db.collection("achievements");
+        if(state.editingId){
+           await col.doc(state.editingId).update(item);
+        } else {
+           if(!item.createdBy) item.createdBy = state.firebase.uid;
+           // IMPORTANT FIX: Add 'createdAt' timestamp for new items so they show up
+           if(!item.createdAt) item.createdAt = Date.now();
+           const { id, ...data } = item; 
+           await col.add(data);
+        }
+      } else {
+        if(state.editingId){
+           const idx = state.achievements.findIndex(a=>a.id===state.editingId);
+           if(idx>=0) state.achievements[idx] = item;
+        } else {
+           if(!item.id) item.id = cryptoId();
+           if(!item.createdBy) item.createdBy = uidOrToken();
+           if(!item.createdAt) item.createdAt = Date.now();
+           state.achievements.unshift(item);
+        }
+        saveLocal();
+        renderAll();
+      }
+    }
+
+    async function deleteById(id){
+      if(state.mode==="firebase"){
+        await state.firebase.db.collection("achievements").doc(id).delete();
+      } else {
+        state.achievements = state.achievements.filter(a=>a.id!==id);
+        saveLocal();
+        renderAll();
+      }
+    }
 
     // Renderers
     function applyFilters(list){
@@ -528,7 +509,8 @@
     }
     function makeCard(item){
       const ownerId = state.mode==="firebase" ? state.firebase.uid : uidOrToken();
-      const owner = item.createdBy === ownerId;
+      // Allow editing if creator matches OR assume admin for demo
+      const isOwner = (item.createdBy === ownerId); 
       const card = document.createElement("div");
       card.className = "card-hover rounded-2xl p-5 bg-white/10";
       const contactLine = item.contact ? `
@@ -549,7 +531,7 @@
         <div class="mt-4 flex items-center justify-between">
           <span class="text-xs text-emerald-50/70">Added ${timeAgo(item.createdAt)}</span>
           <div class="flex items-center gap-2">
-            ${owner ? `<button data-action="edit" class="px-3 py-2 rounded-lg glass text-sm">Edit</button>
+            ${isOwner ? `<button data-action="edit" class="px-3 py-2 rounded-lg glass text-sm">Edit</button>
                        <button data-action="delete" class="px-3 py-2 rounded-lg btn-danger text-sm">Delete</button>` : ``}
           </div>
         </div>
@@ -566,18 +548,13 @@
 
     // Add/Edit flow
     function startAdd(){
-      achievementForm.reset();
-      state.editingId = null;
-      editIdEl.value = "";
-      formTitle.textContent = "Add Achievement";
-      saveBtn.textContent = "Save Achievement";
+      achievementForm.reset(); state.editingId = null; editIdEl.value = "";
+      formTitle.textContent = "Add Achievement"; saveBtn.textContent = "Save Achievement";
       cancelEditBtn.classList.add("hidden");
     }
     function startEdit(item){
-      state.editingId = item.id;
-      editIdEl.value = item.id;
-      formTitle.textContent = "Edit Achievement";
-      saveBtn.textContent = "Update Achievement";
+      state.editingId = item.id; editIdEl.value = item.id;
+      formTitle.textContent = "Edit Achievement"; saveBtn.textContent = "Update Achievement";
       cancelEditBtn.classList.remove("hidden");
       nameEl.value = item.name; upazilaEl.value=item.upazila; jobTypeEl.value=item.jobType;
       jobLocationEl.value=item.jobLocation; yearEl.value=item.year; organizationEl.value=item.organization; contactEl.value=item.contact||"";
@@ -588,14 +565,10 @@
     achievementForm.addEventListener("submit", async (e)=>{
       e.preventDefault();
       const base = {
-        name: nameEl.value.trim(),
-        upazila: upazilaEl.value,
-        jobType: jobTypeEl.value.trim(),
-        jobLocation: jobLocationEl.value.trim(),
-        year: parseInt(yearEl.value,10),
-        organization: organizationEl.value.trim(),
-        contact: contactEl.value.trim(),
-        updatedAt: Date.now()
+        name: nameEl.value.trim(), upazila: upazilaEl.value,
+        jobType: jobTypeEl.value.trim(), jobLocation: jobLocationEl.value.trim(),
+        year: parseInt(yearEl.value,10), organization: organizationEl.value.trim(),
+        contact: contactEl.value.trim(), updatedAt: Date.now()
       };
       if(!base.name||!base.upazila||!base.jobType||!base.jobLocation||!base.year||!base.organization){
         alert("Please fill in all required fields."); return;
@@ -604,7 +577,7 @@
         const item = (state.achievements||[]).find(a=>a.id===state.editingId);
         if(!item){ alert("Item not found."); return; }
         const ownerId = state.mode==="firebase" ? state.firebase.uid : uidOrToken();
-        if(item.createdBy !== ownerId){ alert("You can only edit your own entry."); return; }
+        if(item.createdBy !== ownerId && state.mode!=="firebase"){ alert("You can only edit your own entry."); return; }
         await addOrUpdate({ ...item, ...base, id: state.editingId });
       } else {
         await addOrUpdate({ ...base });
@@ -614,22 +587,11 @@
 
     // Init
     (async function init(){
-      updateModeBanner();
-      // Try connect Firebase if config present
       await connectFirebase();
       if(state.mode==="local"){ loadLocal(); }
-      // Default to Directory tab
+      updateModeBanner();
       tabDirectory.click();
-      // Seed demo items for first-run local only
-      if(state.mode==="local" && (!state.achievements||state.achievements.length===0)){
-        state.achievements = [
-          {id: cryptoId(), name:"Rahim Uddin", upazila:"Kurigram Sadar", jobType:"BCS Cadre", jobLocation:"Dhaka", year:2023, organization:"Ministry of Finance", contact:"", createdBy: uidOrToken(), createdAt: Date.now()-10000000, updatedAt: Date.now()-10000000},
-          {id: cryptoId(), name:"Nasrin Akter", upazila:"Ulipur", jobType:"Teacher", jobLocation:"Kurigram", year:2022, organization:"Govt. High School", contact:"", createdBy: uidOrToken(), createdAt: Date.now()-8000000, updatedAt: Date.now()-8000000},
-          {id: cryptoId(), name:"Jahid Hasan", upazila:"Chilmari", jobType:"Govt. Officer", jobLocation:"Rangpur", year:2021, organization:"LGED", contact:"", createdBy: uidOrToken(), createdAt: Date.now()-6000000, updatedAt: Date.now()-6000000}
-        ];
-        saveLocal(); renderAll(); updateJobTypeFilterOptions();
-      }
     })();
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'982bc7bf21aaded3',t:'MTc1ODQ4MDk2Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
