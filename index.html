@@ -395,6 +395,19 @@
       updateJobTypeFilterOptions();
     }
 
+    // এই ফাংশনটি মিসিং ছিল, তাই ব্যানার আপডেট হচ্ছিল না
+    function updateModeBanner(){
+      if(state.mode==="firebase"){
+        modeBanner.className = "w-full bg-emerald-600 text-white text-sm";
+        modeText.textContent = "Firebase mode: real-time sync is ON. Everyone with the link shares the same data.";
+        openSetupBtn.classList.add("hidden");
+      } else {
+        modeBanner.className = "w-full bg-amber-400/90 text-emerald-950 text-sm";
+        modeText.textContent = "Local mode: data is saved in this browser only. Click “Firebase Setup” to enable real-time sync for everyone.";
+        openSetupBtn.classList.remove("hidden");
+      }
+    }
+
     // Firebase connect/teardown
     async function connectFirebase(){
       // DIRECT CONFIGURATION (Hardcoded)
